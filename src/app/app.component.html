@@ -1,0 +1,74 @@
+<div class="container">
+  <div class="bgImage"></div>
+  <div class="bowlingContainer">
+
+    <!-- Pins picker -->
+    <div class="pinsContainer">
+      <div class="pinsHeader">{{endText.length > 0 ? endText : 'Choose number of pins to knock down'}}</div>
+      <div class="pinsNumbers">
+        <div class="pin" (click)="ChoosePins(pin)" *ngFor="let pin of choices">
+          {{pin}}
+        </div>
+      </div>
+    </div>
+
+    <!-- Bowling Chart -->
+    <div class="bowlingChart">
+      <div
+        [ngClass]="currentRound === index ? 'activeRound round' : index >= 9 && currentRound >= 9 && endText.length < 1 ? 'activeRound round' :'round'"
+        *ngFor="let round of rounds; let index = index">
+        <!-- Round number -->
+        <div class="roundNumber">{{index + 1}}</div>
+        <div class="roundScoresBox">
+          <div class="scoreRow" *ngIf="index < 9">
+            <!-- First hit -->
+            <div class="scoreBox">
+              <div class="score" *ngIf="round.firstHit >= 0">{{round.firstHit}}</div>
+            </div>
+            <!-- Second hit -->
+            <div class="scoreBox scoreBoxEnd">
+              <div class="score" *ngIf="round.secondHit >= 0">{{round.secondHit >= 10 ? 'X' : round.firstHit +
+                round.secondHit === 10 ? '/' : round.secondHit}}</div>
+            </div>
+          </div>
+          <!-- Last round -->
+          <div class="scoreRow" *ngIf="index >= 9">
+            <div class="scoreBox">
+              <div class="score" *ngIf="round.firstHit >= 0">{{round.firstHit >= 10 ? 'X' : round.firstHit}}</div>
+            </div>
+            <div class="scoreBox scoreBoxEnd">
+              <div class="score" *ngIf="round.secondHit >= 0">{{round.secondHit >= 10 ? 'X' : round.firstHit +
+                round.secondHit === 10 ? '/' : round.secondHit}}</div>
+            </div>
+            <div class="scoreBox scoreBoxEnd">
+              <div class="score" *ngIf="round.thirdHit! >= 0">{{round.thirdHit! >= 10 ? 'X' : round.thirdHit!}}</div>
+            </div>
+          </div>
+          <!-- Round total -->
+          <div class="scoreRow">
+
+            <!-- Regular score -->
+            <div class="score scoreBig"
+              *ngIf="(round.firstHit >= 0 || round.secondHit >= 0) && index < 9 && currentRound !== index && round.specialHits <= 0">
+              {{round.shownSum}} </div>
+            <!-- Final score -->
+            <div class="score scoreBig"
+              *ngIf="(round.firstHit >= 0 || round.secondHit >= 0) && endText.length > 1 && index >= 9">
+              {{round.shownSum}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Total score -->
+      <div class="round">
+        <div class="roundNumber roundNumberHalf">Total</div>
+        <div class="roundScoresBox">
+          <div class="scoreRow">
+            <div class="score scoreBig">{{sum}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
